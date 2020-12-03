@@ -1,8 +1,5 @@
-import argparse, re, sys
-
-def parseInput(filename):
-    with open(filename) as f:
-        return [line.strip() for line in f]
+import sys
+import Util
 
 def countTrees(hill, dx, dy):
     trees = 0
@@ -25,10 +22,8 @@ def partTwo(hill):
     print(f'Part 2: {product}')
 
 def main(argv):
-    parser = argparse.ArgumentParser(description='Day 3 of Advent of Code 2020')
-    parser.add_argument('filename', help='input filename')
-    args = parser.parse_args(argv)
-    hill = parseInput(args.filename)
+    args = Util.getArgumentParser(3).parse_args(argv)
+    hill = Util.parseFile(args.filename)
     partOne(hill)
     partTwo(hill)
 

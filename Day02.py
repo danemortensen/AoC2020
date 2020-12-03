@@ -1,15 +1,5 @@
-import argparse, re, sys
-
-def parseInput(filename):
-    passwords = []
-    PATTERN = r'^(\d+)-(\d+) ([a-z]): ([a-z]+)$'
-    pattern = re.compile(PATTERN)
-    with open(filename) as f:
-        for line in f:
-            match = pattern.match(line)
-            assert match
-            passwords.append(match.groups())
-    return passwords
+import sys
+import Util
 
 def charFreqInBounds(low, high, char, pwd):
     return int(low) <= sum(1 if c is char else 0 for c in pwd) <= int(high)
@@ -28,10 +18,10 @@ def partTwo(passwords):
     print(f'Part 2: {numValid(charAtOnePos, passwords)}')
 
 def main(argv):
-    parser = argparse.ArgumentParser(description='Day 2 of Advent of Code 2020')
-    parser.add_argument('filename', help='input filename')
+    parser = Util.getArgumentParser(2)
     args = parser.parse_args(argv)
-    passwords = parseInput(args.filename)
+    passwords = Util.parseFile(args.filename,
+        regex=r'^(\d+)-(\d+) ([a-z]): ([a-z]+)$')
     partOne(passwords)
     partTwo(passwords)
 
