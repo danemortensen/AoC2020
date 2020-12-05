@@ -68,7 +68,8 @@ def filterInvalidFields(fieldDicts):
     return validated
 
 def main(argv):
-    parser = Util.getArgumentParser(4)
+    Util.setDay(4)
+    parser = Util.getArgumentParser()
     args = parser.parse_args(argv)
     fieldDicts = parseInput(args.filename)
     withRequired = filterMissingFields(fieldDicts)

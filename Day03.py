@@ -22,7 +22,8 @@ def partTwo(hill):
     print(f'Part 2: {product}')
 
 def main(argv):
-    args = Util.getArgumentParser(3).parse_args(argv)
+    Util.setDay(3)
+    args = Util.getArgumentParser().parse_args(argv)
     hill = Util.parseFile(args.filename)
     partOne(hill)
     partTwo(hill)

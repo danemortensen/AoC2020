@@ -18,7 +18,8 @@ def partTwo(passwords):
     print(f'Part 2: {numValid(charAtOnePos, passwords)}')
 
 def main(argv):
-    parser = Util.getArgumentParser(2)
+    Util.setDay(2)
+    parser = Util.getArgumentParser()
     args = parser.parse_args(argv)
     passwords = Util.parseFile(args.filename,
         regex=r'^(\d+)-(\d+) ([a-z]): ([a-z]+)$')
