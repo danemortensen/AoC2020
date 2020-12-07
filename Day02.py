@@ -22,7 +22,7 @@ def main(argv):
     parser = Util.getArgumentParser()
     args = parser.parse_args(argv)
     passwords = Util.parseFile(args.filename,
-        regex=r'^(\d+)-(\d+) ([a-z]): ([a-z]+)$')
+        Util.regexFileHandler(r'^(\d+)-(\d+) ([a-z]): ([a-z]+)$'))
     partOne(passwords)
     partTwo(passwords)
 

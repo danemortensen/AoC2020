@@ -24,7 +24,7 @@ def partTwo(hill):
 def main(argv):
     Util.setDay(3)
     args = Util.getArgumentParser().parse_args(argv)
-    hill = Util.parseFile(args.filename)
+    hill = Util.parseFile(args.filename, None)
     partOne(hill)
     partTwo(hill)
 

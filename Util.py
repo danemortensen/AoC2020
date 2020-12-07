@@ -15,19 +15,30 @@ def getArgumentParser(filename=True):
         parser.add_argument('filename', help='input filename')
     return parser
 
-def parseFile(filename, regex=None):
-    parsed = []
-    if regex:
-        pattern = re.compile(regex)
-    with open(filename) as f:
+def groupBetweenEmptyLines(groupHandler=None):
+    def _groupBetweenEmptyLines(f):
+        parsed = re.split(r'(?:\r?\n){2,}', f.read().strip())
+        if groupHandler:
+            parsed = [groupHandler(group) for group in parsed]
+        return parsed
+    return _groupBetweenEmptyLines
+
+def regexFileHandler(regex):
+    pattern = re.compile(regex)
+    def _regexFileHandler(f):
+        parsed = []
         for line in f:
-            if regex:
-                match = pattern.match(line)
-                assert match, f'Line "{line}" does not match regex {regex}'
-                parsed.append(match.groups())
-            else:
-                parsed.append(line.strip())
-    return parsed
+            match = pattern.match(line)
+            assert match, f'Line "{line}" does not match regex {regex}'
+            parsed.append(match.groups())
+        return parsed
+    return _regexFileHandler
+
+def parseFile(filename, handler):
+    with open(filename, 'r') as f:
+        if not handler:
+            return [line.strip() for line in f]
+        return handler(f)
 
 def printSolutions(solutions):
     print()

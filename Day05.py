@@ -23,7 +23,8 @@ def main(argv):
     Util.setDay(5)
     parser = Util.getArgumentParser()
     args = parser.parse_args(argv)
-    directions = Util.parseFile(args.filename, regex=r'^([F|B]{7})([L|R]{3})$')
+    directions = Util.parseFile(args.filename,
+        Util.regexFileHandler(r'^([F|B]{7})([L|R]{3})$'))
     seatIds = getSeatIds(directions)
     Util.printSolutions([partOne(seatIds), partTwo(seatIds)])
 

@@ -1,3 +1,5 @@
 input/
+answers.txt
 __pycache__/
 *~
+.*
