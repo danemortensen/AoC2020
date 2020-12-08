@@ -12,7 +12,7 @@ def getAdjacencies(rules):
     for color, rule in rules.items():
         forward[color] = []
         if color not in backward:
-            backward[color] = set()
+            backward[color] = []
         if rule == 'no other bags':
             continue
         for contents in rule.split(', '):
@@ -21,19 +21,19 @@ def getAdjacencies(rules):
             numContained, colorContained = match.groups()
             forward[color].append((colorContained, numContained))
             if colorContained not in backward:
-                backward[colorContained] = set()
-            backward[colorContained].add(color)
+                backward[colorContained] = []
+            backward[colorContained].append(color)
     return forward, backward
 
-def traverseAdjacencies(adjacencies, start):
+def getBagsInvolvingColor(adjacencies, start):
     visited = set([start])
-    def _traverseAdjacencies(cur):
+    def _getBagsInvolvingColor(cur):
         for neighbor in adjacencies[cur]:
             if neighbor in visited:
                 continue
             visited.add(neighbor)
-            _traverseAdjacencies(neighbor)
-    _traverseAdjacencies(start)
+            _getBagsInvolvingColor(neighbor)
+    _getBagsInvolvingColor(start)
     return visited
 
 def getBagsRequired(adjacencies, start):
@@ -49,7 +49,7 @@ def getBagsRequired(adjacencies, start):
     return _getBagsRequired(start)
 
 def partOne(adjacencies):
-    return len(traverseAdjacencies(adjacencies, 'shiny gold')) - 1
+    return len(getBagsInvolvingColor(adjacencies, 'shiny gold')) - 1
 
 def partTwo(adjacencies):
     return getBagsRequired(adjacencies, 'shiny gold') - 1
