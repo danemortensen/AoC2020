@@ -11,27 +11,17 @@ def accumulate(instructions):
     accumulator = 0
     executed = set()
     i = 0
-    def _handleAcc(arg):
-        nonlocal accumulator, i
-        accumulator += arg
-        i += 1
-    def _handleJmp(arg):
-        nonlocal i
-        i += arg
-    def _handleNop(arg):
-        nonlocal i
-        i += 1
     handlers = {
-        ACC: _handleAcc,
-        JMP: _handleJmp,
-        NOP: _handleNop
+        ACC: lambda arg, acc, i: (acc + arg, i + 1),
+        JMP: lambda arg, acc, i: (acc, i + arg),
+        NOP: lambda arg, acc, i: (acc, i + 1),
     }
     while i < len(instructions):
         if i in executed:
             break
         executed.add(i)
         op, arg = instructions[i]
-        handlers[op](int(arg))
+        accumulator, i = handlers[op](int(arg), accumulator, i)
     return accumulator
 
 def main(argv):

@@ -1,4 +1,4 @@
-import argparse, re
+import argparse, collections, re
 
 def setDay(d):
     global day
@@ -34,6 +34,9 @@ def regexFileHandler(regex):
         return parsed
     return _regexFileHandler
 
+def intFileHandler(f):
+    return [int(line) for line in f]
+
 def parseFile(filename, handler):
     with open(filename, 'r') as f:
         if not handler:
@@ -50,3 +53,29 @@ def printSolutions(solutions):
     for i in range(len(solutions)):
         print(f'  Part {i + 1}: {solutions[i]}')
         print()
+
+class LruSet(object):
+    def __init__(self, capacity):
+        self.__capacity = capacity
+        self._size = 0
+        self._counts = {}
+        self._queue = collections.deque()
+
+    def values(self):
+        return list(self._queue)
+
+    def add(self, val):
+        lru = None
+        if self._size == self.__capacity:
+            lru = self._queue.popleft()
+            self._counts[lru] -= 1
+            if self._counts[lru] == 0:
+                del self._counts[lru]
+            self._size -= 1
+        self._queue.append(val)
+        self._counts[val] = self._counts.get(val, 0) + 1
+        self._size += 1
+        return lru
+
+    def __str__(self):
+        return 'LruCache([' + ', '.join(str(v) for v in self._queue) + '])'
